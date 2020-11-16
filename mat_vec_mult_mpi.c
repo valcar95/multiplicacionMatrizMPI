@@ -63,6 +63,7 @@ int main()
   // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
   // Tomamos el tiempo del proceso más lento
+  MPI_Barrier(MPI_COMM_WORLD);
   MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
              MPI_MAX, 0, MPI_COMM_WORLD);
 
