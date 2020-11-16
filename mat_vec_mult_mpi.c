@@ -64,7 +64,7 @@ int main()
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
-  MPI_Bcast (&n_per_proc, 1, MPI_LONG_LONG_INT, MASTER, MPI_COMM_WORLD);
+  MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
   printf("n=%d from process=%d\n",n,my_rank);
 
 
