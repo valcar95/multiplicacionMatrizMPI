@@ -42,7 +42,7 @@ int main()
     scanf("%ld", &seed);
     srand(seed);
   }
-
+  MPI_Barrier(MPI_COMM_WORLD);
   printf("n=%d from process=%d\n",n,my_rank);
   
 
