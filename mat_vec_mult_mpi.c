@@ -26,12 +26,13 @@ int main()
   double* y = NULL;
   int n, iters;
   long seed;
-  int my_rank;
+  int my_rank,comm_sz;
   double local_start, local_finish, local_elapsed, elapsed;
 
   MPI_Init(NULL, NULL);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-
+  MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
+  printf("proccess %d of %d\n",my_rank,comm_sz);
   if(my_rank == 0){
     // Obtener las dimensiones
     printf("Ingrese la dimensión n:\n");
