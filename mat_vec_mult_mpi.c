@@ -84,7 +84,8 @@ int main()
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
 
-  mat_vect_mult(A, x, y, n, iters);
+  mat_vect_mult(local_A, local_x, local_y, n_per_proc, iters);
+  MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   local_finish = MPI_Wtime();
   // Cada proceso toma un tiempo local
