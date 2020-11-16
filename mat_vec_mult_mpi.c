@@ -43,8 +43,8 @@ int main()
     scanf("%ld", &seed);
     srand(seed);
   }
-  MPI_Bcast(&n,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
-  MPI_Bcast(&iters,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
+  MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   printf("proccess %d of %d\n",my_rank,comm_sz);
   printf("n=%d from process=%d\n",n,my_rank);
