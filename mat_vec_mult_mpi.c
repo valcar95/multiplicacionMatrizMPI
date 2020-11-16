@@ -32,7 +32,7 @@ int main()
   MPI_Init(NULL, NULL);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
-  printf("proccess %d of %d\n",my_rank,comm_sz);
+  
   if(my_rank == 0){
     // Obtener las dimensiones
     printf("Ingrese la dimensión n:\n");
@@ -46,6 +46,7 @@ int main()
   MPI_Bcast(&n,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  printf("proccess %d of %d\n",my_rank,comm_sz);
   printf("n=%d from process=%d\n",n,my_rank);
   
 
