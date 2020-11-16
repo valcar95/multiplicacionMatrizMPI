@@ -68,9 +68,9 @@ int main()
   printf("n=%d from process=%d\n",n,my_rank);
 
 
-  local_A=(int *) malloc(sizeof(int)*n_per_proc*n_per_proc);
-  local_x=(int *) malloc(sizeof(int)*n_per_proc);
-  local_y=(int *) malloc(sizeof(int)*n_per_proc);
+  local_A=malloc(sizeof(double)*n_per_proc*n_per_proc);
+  local_x=malloc(sizeof(double)*n_per_proc);
+  local_y=malloc(sizeof(double)*n_per_proc);
 
   MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
