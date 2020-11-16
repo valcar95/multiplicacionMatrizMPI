@@ -47,25 +47,31 @@ int main()
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
     srand(seed);
-    n_per_proc = n/comm_sz;
-    if(n%comm_sz != 0)
-    {
-      n_per_proc+=1;
-    }
-      // la matriz A tendrá una representación unidimensional
+
     A = malloc(sizeof(double) * n * n);
     x = malloc(sizeof(double) * n);
     y = malloc(sizeof(double) * n);
 
-    //generar valores para las matrices
     gen_data(A, n*n);
     gen_data(x, n);
+
+    n_per_proc = n/comm_sz;
+    if(n%comm_sz != 0)
+    {
+      n_per_proc+=1;
+      for(i = 0; i < (n_per_proc*comm_sz - n); i++){
+        x[n+i] = 0;
+        for(j = 0; j < (n_per_proc*comm_sz - n); j++)
+          A[i*n+j]=0;
+      }
+    }
+    
   }
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  printf("n=%d from process=%d\n",n,my_rank);
+  printf("n=%d from process=%d n_per_proc=%d \n",n,my_rank,n_per_proc);
 
 
   local_A=malloc(sizeof(double)*n_per_proc*n_per_proc);
