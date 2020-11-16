@@ -24,7 +24,12 @@ int main()
   double* A = NULL;
   double* x = NULL;
   double* y = NULL;
-  int n, iters;
+
+  double* local_A=NULL;
+  double* local_x=NULL;
+  double* local_y=NULL;
+
+  int n, iters, n_per_proc;
   long seed;
   int my_rank,comm_sz;
   double local_start, local_finish, local_elapsed, elapsed;
@@ -42,21 +47,38 @@ int main()
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
     srand(seed);
+    n_per_proc = n/comm_sz;
+    if(n%comm_sz != 0)
+    {
+      n_per_proc+=1;
+    }
+      // la matriz A tendrá una representación unidimensional
+    A = malloc(sizeof(double) * n * n);
+    x = malloc(sizeof(double) * n);
+    y = malloc(sizeof(double) * n);
+
+    //generar valores para las matrices
+    gen_data(A, n*n);
+    gen_data(x, n);
   }
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  MPI_Bcast (&n_per_proc, 1, MPI_LONG_LONG_INT, MASTER, MPI_COMM_WORLD);
   printf("n=%d from process=%d\n",n,my_rank);
+
+
+  local_A=(int *) malloc(sizeof(int)*n_per_proc*n_per_proc);
+  local_x=(int *) malloc(sizeof(int)*n_per_proc);
+  local_y=(int *) malloc(sizeof(int)*n_per_proc);
+
+  MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+  printf("from process=%d local_A[0]=%d\n",my_rank,local_A[0]);
   
 
-  // la matriz A tendrá una representación unidimensional
-  A = malloc(sizeof(double) * n * n);
-  x = malloc(sizeof(double) * n);
-  y = malloc(sizeof(double) * n);
-
-  //generar valores para las matrices
-  gen_data(A, n*n);
-  gen_data(x, n);
+  
 
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   MPI_Barrier(MPI_COMM_WORLD);
