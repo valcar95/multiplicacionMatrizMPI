@@ -41,6 +41,7 @@ int main()
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
     srand(seed);
+    MPI_Bcast(&n,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   }
   MPI_Barrier(MPI_COMM_WORLD);
   printf("n=%d from process=%d\n",n,my_rank);
