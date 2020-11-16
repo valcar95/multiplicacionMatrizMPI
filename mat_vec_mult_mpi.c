@@ -42,6 +42,8 @@ int main()
     scanf("%ld", &seed);
     srand(seed);
   }
+
+  printf("n=%d from process=%d\n",n,my_rank);
   
 
   // la matriz A tendrá una representación unidimensional
