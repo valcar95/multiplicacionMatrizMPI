@@ -108,9 +108,9 @@ int main()
   }
 
   MPI_Finalize();
-  free(A);
-  free(x);
-  free(y);
+  //free(A);
+  //free(x);
+  //free(y);
   
   return 0;
 }
