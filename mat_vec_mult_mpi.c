@@ -43,6 +43,8 @@ int main()
     srand(seed);
   }
   MPI_Bcast(&n,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  MPI_Bcast(&iters,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   printf("n=%d from process=%d\n",n,my_rank);
   
 
@@ -72,7 +74,7 @@ int main()
   if(my_rank == 0){
     // Solo el proceso 0 imprime el tiempo transcurrido
     printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
-    print_vector("y", y, n);
+    //print_vector("y", y, n);
   }
 
   MPI_Finalize();
