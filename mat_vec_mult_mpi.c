@@ -75,7 +75,7 @@ int main()
   MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  printf("from process=%d local_A[0]=%d\n",my_rank,local_A[0]);
+  printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
   
 
   
