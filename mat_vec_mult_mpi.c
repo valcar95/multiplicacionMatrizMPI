@@ -105,9 +105,9 @@ int main()
     // Solo el proceso 0 imprime el tiempo transcurrido
     printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     //print_vector("y", y, n);
-    free(A);
-    free(x);
-    free(y);
+    //free(A);
+    //free(x);
+    //free(y);
   }
 
   MPI_Finalize();
