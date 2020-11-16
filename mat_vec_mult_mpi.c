@@ -30,6 +30,7 @@ int main()
   double* local_y=NULL;
 
   int n, iters, n_per_proc;
+  int h, i, j;
   long seed;
   int my_rank,comm_sz;
   double local_start, local_finish, local_elapsed, elapsed;
@@ -122,7 +123,6 @@ void gen_data(double * array, int size){
 }
 
 void mat_vect_mult(double* A, double* x, double* y, int n, int it){
-  int h, i, j;
   for(h = 0; h < it; h++){
     for(i = 0; i < n; i++){
       y[i] = 0.0;
