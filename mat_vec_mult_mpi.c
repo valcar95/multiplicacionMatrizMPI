@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <mpi.h>
 
 /* función para generar <size> cantidad de datos aleatorios */
 void gen_data(double * array, int size);
@@ -25,15 +26,23 @@ int main()
   double* y = NULL;
   int n, iters;
   long seed;
+  int my_rank;
+  double local_start, local_finish, local_elapsed, elapsed;
 
-  // Obtener las dimensiones
-  printf("Ingrese la dimensión n:\n");
-  scanf("%d", &n);
-  printf("Ingrese el número de iteraciones:\n");
-  scanf("%d", &iters);
-  printf("Ingrese semilla para el generador de números aleatorios:\n");
-  scanf("%ld", &seed);
-  srand(seed);
+  MPI_Init(NULL, NULL);
+  MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+
+  if(my_rank == 0){
+    // Obtener las dimensiones
+    printf("Ingrese la dimensión n:\n");
+    scanf("%d", &n);
+    printf("Ingrese el número de iteraciones:\n");
+    scanf("%d", &iters);
+    printf("Ingrese semilla para el generador de números aleatorios:\n");
+    scanf("%ld", &seed);
+    srand(seed);
+  }
+  
 
   // la matriz A tendrá una representación unidimensional
   A = malloc(sizeof(double) * n * n);
@@ -44,7 +53,25 @@ int main()
   gen_data(A, n*n);
   gen_data(x, n);
 
+  //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
+  MPI_Barrier(MPI_COMM_WORLD);
+  local_start = MPI_Wtime();
+
   mat_vect_mult(A, x, y, n, iters);
+
+  local_finish = MPI_Wtime();
+  // Cada proceso toma un tiempo local
+  local_elapsed = local_finish - local_start;
+  // Tomamos el tiempo del proceso más lento
+  MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
+             MPI_MAX, 0, MPI_COMM_WORLD);
+
+  if(my_rank == 0){
+    // Solo el proceso 0 imprime el tiempo transcurrido
+    printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
+  }
+
+  MPI_Finalize();
 
   print_vector("y", y, n);
   free(A);
@@ -66,7 +93,7 @@ void mat_vect_mult(double* A, double* x, double* y, int n, int it){
     for(i = 0; i < n; i++){
       y[i] = 0.0;
       for(j = 0; j < n; j++)
-	y[i] += A[i*n+j] * x[j];
+	      y[i] += A[i*n+j] * x[j];
     }
     // x <= y
     for(i = 0; i < n; i++)
