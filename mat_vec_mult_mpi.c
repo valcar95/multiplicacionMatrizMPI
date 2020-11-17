@@ -68,7 +68,8 @@ int main()
 
   printf("\n-----------------Vector A en process=%d---------------\n",my_rank);
   print_vector("A", A, n*n);
-
+  MPI_Finalize();
+  return 0;
 
   printf("despues de b cast from process=%d\n",my_rank);
 
