@@ -70,10 +70,11 @@ int main()
   int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
   int CC[4];
 
-  MPI_Scatter(AA, 4, MPI_INT, CC, 4, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter(&AA, 4, MPI_INT, CC, 4, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
   MPI_Barrier(MPI_COMM_WORLD);
+  printf("----------------Entra al segundo--------------------"); 
   if(my_rank==0){
     printf("Entra al segundo"); 
   }
