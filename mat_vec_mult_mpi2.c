@@ -51,7 +51,8 @@ int main()
   }
 
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
-  MPI_Bcast ( &n, 1 , MPI_INT , 0 , MPI_COMM_WORLD ) ;
+  MPI_Bcast ( &n, 1 , MPI_INT , 0 , MPI_COMM_WORLD );
+  MPI_Bcast ( &iters, 1 , MPI_INT , 0 , MPI_COMM_WORLD );
   srand(seed);
   // la matriz A tendrá una representación unidimensional
   A = malloc(sizeof(double) * n * n);
