@@ -52,7 +52,7 @@ int main()
 
     
     n_per_proc = n*n/(comm_sz*(n/comm_sz));
-    A = malloc(sizeof(double) * n*n);
+    A = double[n*n];
     x = malloc(sizeof(double) * n);
     y = malloc(sizeof(double) * n);
 
