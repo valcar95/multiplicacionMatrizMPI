@@ -16,7 +16,7 @@
 void gen_data(double * array, int size);
 /* función para multiplicar iterativamente un matriz 
  * <m x n> por un vector de tam <n> */
-void mat_vect_mult(double* A, double* x, double* y, int n, int it,int rank);
+void mat_vect_mult(double* A, double* x, double* y, int n, int it,int n_per_proc, int my_rank);
 /* función para imprimir un vector llamado <name> de tamaño <m>*/
 void print_vector(char* name, double*  y, int m);
 
@@ -82,7 +82,7 @@ int main()
   print_vector(my_rank_str, local_x, n_per_proc);
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
-  mat_vect_mult(A, local_x, local_y, n_per_proc, iters,my_rank);
+  mat_vect_mult(A, local_x, local_y, n, iters,my_rank, n_per_proc, my_rank);
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   local_finish = MPI_Wtime();
   local_elapsed = local_finish - local_start;
@@ -109,9 +109,17 @@ void gen_data(double * array, int size){
     array[i] = (double) rand() / (double) RAND_MAX;
 }
 
-void mat_vect_mult(double* A, double* x, double* y, int n, int it,int my_rank){
+void mat_vect_mult(double* A, double* x, double* y, int n, int it,int n_per_proc, int my_rank){
   int h, i, j;
   for(h = 0; h < it; h++){
+
+    for(i=0; i<n_per_proc; i++){
+      y[i] = 0.0;
+      for(j = 0; j < n; j++){
+         y[i] += A[(my_rank*n_per_proc)+i] * x[i];
+      }
+    }
+
     for(i = 0; i < n; i++){
       y[i] = 0.0;
       for(j = 0; j < n; j++){
