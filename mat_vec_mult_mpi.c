@@ -49,25 +49,23 @@ int main()
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
     srand(seed);
-  }
-  
 
+    
+    n_per_proc = n*n/(comm_sz*(n/comm_sz))
+    A = malloc(sizeof(double) * n*n);
+    x = malloc(sizeof(double) * n);
+    y = malloc(sizeof(double) * n);
+
+    gen_data(A, n*n);
+    gen_data(x, n);
+    
+  }
   printf("antes de b cast from process=%d\n",my_rank);
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  
-  mod=n%comm_sz;
-  n_per_proc = (n+mod)/comm_sz;
-  A = malloc(sizeof(double) * (n+mod) * (n+mod));
-  x = malloc(sizeof(double) * (n+mod));
-  y = malloc(sizeof(double) * (n+mod));
-  gen_data(A, (n+mod)*(n+mod));
-  gen_data(x, (n+mod));
-
-  MPI_Bcast (&A, (n+mod) * (n+mod), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+  MPI_Bcast (&A, n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 
   printf("despues de b cast from process=%d\n",my_rank);
@@ -77,6 +75,7 @@ int main()
 
   printf("antes de scater  from process=%d\n",my_rank);
 
+  printf("entre scater  from process=%d\n",my_rank);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d\n",my_rank);
   
