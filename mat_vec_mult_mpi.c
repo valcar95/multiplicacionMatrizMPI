@@ -106,13 +106,7 @@ int main()
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
   
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  if(my_rank==0){
-    printf("-----------final-----------------"); 
-  }
-  MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Finalize();
-
-  return 0;
+  
   local_finish = MPI_Wtime();
   // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
