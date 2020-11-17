@@ -65,19 +65,12 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  printf("\n-----------------Vector A en process=%d---------------\n",my_rank);
-  print_vector("A", A, n*n);
-  MPI_Finalize();
-  return 0;
-
   printf("despues de b cast from process=%d\n",my_rank);
 
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
   printf("antes de scater  from process=%d\n",my_rank);
-
-  printf("entre scater  from process=%d\n",my_rank);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d\n",my_rank);
   
