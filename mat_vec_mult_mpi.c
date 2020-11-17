@@ -39,6 +39,24 @@ int main()
   MPI_Init(NULL, NULL);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
+
+  int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
+  int CC[1];
+
+  MPI_Scatter(AA, 16/comm_sz, MPI_INT, CC, 16/comm_sz, MPI_INT, 0, MPI_COMM_WORLD);
+  printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
+  MPI_Barrier(MPI_COMM_WORLD);
+  if(my_rank==0){
+    printf("-----------sale de la barrera-------------\n"); 
+  }
+  
+  printf("----------------Entra al segundo--------------------"); 
+  if(my_rank==0){
+    printf("Entra al segundo"); 
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Finalize();
+  return 0;
   
   if(my_rank == 0){
     // Obtener las dimensiones
@@ -67,23 +85,7 @@ int main()
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
-  int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
-  int CC[1];
-
   
-
-  MPI_Scatter(AA, 16/comm_sz, MPI_INT, CC, 16/comm_sz, MPI_INT, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(my_rank==0){
-    printf("-----------sale de la barrera-------------\n"); 
-  }
-  
-  printf("----------------Entra al segundo--------------------"); 
-  if(my_rank==0){
-    printf("Entra al segundo"); 
-  }
-  MPI_Barrier(MPI_COMM_WORLD);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   //printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
