@@ -59,21 +59,21 @@ int main()
   //generar valores para las matrices
   
   if(pid==0){
-    print_vector("x", x, n);
-    print_vector("A", A, n*n);
+    //print_vector("x", x, n);
+    //print_vector("A", A, n*n);
   }
 
   MPI_Bcast ( &n, 1 , MPI_INT , 0 , MPI_COMM_WORLD ) ;
 
   // Local data
-  local_x = malloc(sizeof(double) * n/p * n);
-  local_y = malloc(sizeof(double) * n/p * n);
+  local_x = malloc(sizeof(double) * n/p);
+  local_y = malloc(sizeof(double) * n/p);
 
-  MPI_Scatter(x , n * n/p , MPI_DOUBLE , local_x , n * n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
+  MPI_Scatter(x , n/p , MPI_DOUBLE , local_x , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
   mat_vect_mult(A, local_x, local_y, n, iters,p);
 
-  MPI_Gather( local_y , n*n/p , MPI_DOUBLE , y , n*n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
+  MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
   print_vector("y", y, n);
   free(A);
@@ -104,7 +104,7 @@ void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, i
         }
     }
     // x <= y
-    for(i = 0; i < (n/p * n); i++){
+    for(i = 0; i < (n/p); i++){
         local_x[i] = local_y[i];
     }
   }
