@@ -106,8 +106,8 @@ void gen_data(double * array, int size){
 void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, int p){
   int h, i, j,k,local_n;
   local_n=n/p;
- /* for(h = 0; h < it; h++){
-      for(i = 0; i < local_n; i++){
+  for(h = 0; h < it; h++){
+      /*for(i = 0; i < local_n; i++){
         local_y[i] = 0.0;
         for(j = 0; j < local_n; j++){
             local_y[i] += A[i*local_n+j] * local_x[j];
@@ -115,7 +115,7 @@ void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, i
       }*/
 	      
     
-    for (i=0 ; i< (n/p) ; i++ )
+    for (i=0 ; i< local_n ; i++ )
     {
         for (j = 0 ; j<n ; j++ )
         {
