@@ -78,8 +78,6 @@ int main()
   if(my_rank==0){
     printf("-----------sale de la barrera-------------\n"); 
   }
-  MPI_Barrier(MPI_COMM_WORLD);
-
   
   printf("----------------Entra al segundo--------------------"); 
   if(my_rank==0){
