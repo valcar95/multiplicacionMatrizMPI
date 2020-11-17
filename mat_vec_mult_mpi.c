@@ -53,7 +53,7 @@ int main()
   
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
-  A = malloc(sizeof(double) * n*n);
+  A = malloc(sizeof(double) * n * n);
   srand(seed);
   gen_data(A, n*n);
   x = malloc(sizeof(double) * (n_per_proc*comm_sz));
@@ -67,7 +67,7 @@ int main()
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
-  MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(&x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
   
