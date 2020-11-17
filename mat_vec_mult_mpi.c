@@ -61,15 +61,15 @@ int main()
     n_per_proc+=1;
   }
 
-  A = malloc(sizeof(double) * (n_per_proc*comm_sz) * (n_per_proc*comm_sz));
+  A = malloc(sizeof(double) * n * n);
   srand(seed);
   gen_data(A, n*n);
 
   if(my_rank==0){
-    x = malloc(sizeof(double) * (n_per_proc*comm_sz));
-    y = malloc(sizeof(double) * (n_per_proc*comm_sz));
-    gen_data(x, (n_per_proc*comm_sz));
-    print_vector("x", x, (n_per_proc*comm_sz));
+    x = malloc(sizeof(double) * n);
+    y = malloc(sizeof(double) * n);
+    gen_data(x, n);
+    print_vector("x", x, n);
     print_vector("A", A, n*n);
   }
 
