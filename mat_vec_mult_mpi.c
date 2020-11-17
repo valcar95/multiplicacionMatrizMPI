@@ -40,10 +40,13 @@ int main()
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
 
-  double AA[16]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0};
+  int lng=16;
+  double* AA=malloc(sizeof(double) * lng);
+  srand(16);
+  gen_data(AA,lng);
   double CC[1];
 
-  MPI_Scatter(AA, 16/comm_sz, MPI_DOUBLE, CC, 16/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(AA, lng/comm_sz, MPI_DOUBLE, CC, lng/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
   MPI_Barrier(MPI_COMM_WORLD);
   if(my_rank==0){
