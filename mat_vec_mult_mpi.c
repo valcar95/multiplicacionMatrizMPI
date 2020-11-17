@@ -61,7 +61,7 @@ int main()
     n_per_proc+=1;
   }
 
-  A = malloc(sizeof(double) * n * n);
+  A = malloc(sizeof(double) * (n_per_proc*comm_sz) * (n_per_proc*comm_sz));
   srand(seed);
   gen_data(A, n*n);
 
