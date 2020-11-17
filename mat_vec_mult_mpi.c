@@ -64,7 +64,7 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  local_x=malloc(sizeof(double)*(n_per_proc);
+  local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
