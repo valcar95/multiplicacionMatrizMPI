@@ -72,10 +72,15 @@ int main()
   MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+  
+  
+
+  
+
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
-
+  printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
   mat_vect_mult(local_A, local_x, local_y, n_per_proc, iters);
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -91,9 +96,9 @@ int main()
     // Solo el proceso 0 imprime el tiempo transcurrido
     printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     //print_vector("y", y, n);
-    free(A);
-    free(x);
-    free(y);
+    //free(A);
+    //free(x);
+    //free(y);
   }
 
   MPI_Finalize();
