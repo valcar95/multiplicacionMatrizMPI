@@ -56,8 +56,8 @@ int main()
   A = malloc(sizeof(double) * n*n);
   srand(seed);
   gen_data(A, n*n);
+  x = malloc(sizeof(double) * (n_per_proc*comm_sz));
   if(my_rank==0){
-    x = malloc(sizeof(double) * (n_per_proc*comm_sz));
     y = malloc(sizeof(double) * (n_per_proc*comm_sz));
     gen_data(x, (n_per_proc*comm_sz));
   }
