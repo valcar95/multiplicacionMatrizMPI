@@ -48,12 +48,9 @@ int main()
     scanf("%d", &iters);
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
-    srand(seed);
-    n_per_proc = n*n/(comm_sz*(n/comm_sz));
-    x = malloc(sizeof(double) * n);
-    y = malloc(sizeof(double) * n);
     
-    gen_data(x, n);
+    n_per_proc = n*n/(comm_sz*(n/comm_sz));
+    
     
   }
   
@@ -61,12 +58,19 @@ int main()
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   A = malloc(sizeof(double) * n*n);
   if(my_rank==0){
+    srand(seed);
     gen_data(A, n*n);
+    x = malloc(sizeof(double) * n);
+    y = malloc(sizeof(double) * n);
+    gen_data(x, n);
   }
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast (A, n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast (&A, n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+  printf("\n-----------------Vector A en process=%d---------------\n",my_rank);
+  print_vector("A", A, n*n);
 
 
   printf("despues de b cast from process=%d\n",my_rank);
