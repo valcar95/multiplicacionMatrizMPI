@@ -79,7 +79,7 @@ int main()
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   char my_rank_str[20];
   sprintf(my_rank_str, "local_x_for:%d", my_rank); 
-  print_vector(my_rank_str, local_x, new_n*new_n);
+  print_vector(my_rank_str, local_x, n_per_proc);
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
