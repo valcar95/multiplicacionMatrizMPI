@@ -68,7 +68,7 @@ void mat_vect_mult(double* A, double* x, double* y, int n, int it){
     for(i = 0; i < n; i++){
       y[i] = 0.0;
       for(j = 0; j < n; j++)
-	y[i] += A[i*n+j] * x[j];
+	      y[i] += A[i*n+j] * x[j];
     }
     // x <= y
     for(i = 0; i < n; i++)
