@@ -57,13 +57,7 @@ int main()
   A = malloc(sizeof(double) * n * n);
   gen_data(A, n*n);
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(pid==0){
-      printf("llega antes del despues de gen A");
-  }
-
-  MPI_Finalize();
-  return 0;
+  
   
   //generar valores para las matrices
   
@@ -72,7 +66,7 @@ int main()
     //print_vector("A", A, n*n);
   }
 
-  
+ 
 
   
 
@@ -84,14 +78,25 @@ int main()
 
   MPI_Scatter(x , n/p , MPI_DOUBLE , local_x , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
+ MPI_Barrier(MPI_COMM_WORLD);
+  if(pid==0){
+      printf("llega despues del despues de gen A");
+  }
+
+  //MPI_Finalize();
+  //return 0;
+
   mat_vect_mult(A, local_x, local_y, n, iters,p);
 
   MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
+  MPI_Finalize();
   print_vector("y", y, n);
   free(A);
-  free(x);
-  free(y);
+  if(pid==0){
+    free(x);
+    free(y);
+  }
   
   return 0;
 }
