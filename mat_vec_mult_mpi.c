@@ -51,7 +51,7 @@ int main()
     srand(seed);
 
     
-    n_per_proc = n*n/(comm_sz*(n/comm_sz))
+    n_per_proc = n*n/(comm_sz*(n/comm_sz));
     A = malloc(sizeof(double) * n*n);
     x = malloc(sizeof(double) * n);
     y = malloc(sizeof(double) * n);
@@ -78,9 +78,6 @@ int main()
   printf("entre scater  from process=%d\n",my_rank);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d\n",my_rank);
-  
-  
-
   
 
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
