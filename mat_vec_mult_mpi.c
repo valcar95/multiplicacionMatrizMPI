@@ -63,7 +63,6 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  printf("n=%d from process=%d n_per_proc=%d \n",n,my_rank,n_per_proc);
 
 
   local_A=malloc(sizeof(double)*n_per_proc*n_per_proc);
@@ -72,11 +71,6 @@ int main()
 
   MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-  printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
-  
-
-  
 
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   MPI_Barrier(MPI_COMM_WORLD);
@@ -97,9 +91,9 @@ int main()
     // Solo el proceso 0 imprime el tiempo transcurrido
     printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     //print_vector("y", y, n);
-    //free(A);
-    //free(x);
-    //free(y);
+    free(A);
+    free(x);
+    free(y);
   }
 
   MPI_Finalize();
