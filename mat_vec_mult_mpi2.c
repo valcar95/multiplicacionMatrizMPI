@@ -104,15 +104,13 @@ void gen_data(double * array, int size){
 }
 
 void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, int p){
-  printf("----entra----\n");
   int h, i, j,k,local_n;
   local_n=n/p;
   for(h = 0; h < it; h++){
-
       for(i = 0; i < local_n; i++){
         local_y[i] = 0.0;
         for(j = 0; j < local_n; j++){
-            local_y[i] += A[i*n+j] * local_x[j];
+            local_y[i] += A[i*local_n+j] * local_x[j];
         }
       }
 	      
@@ -134,7 +132,6 @@ void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, i
         local_x[i] = local_y[i];
     }
   }
-  printf("----sale----\n");
 }
 
 void print_vector(char* name, double*  y, int m) {
