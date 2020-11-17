@@ -40,13 +40,25 @@ int main()
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
 
-  int lng=16;
-  double* AA=malloc(sizeof(double) * lng);
+  if(my_rank == 0){
+    // Obtener las dimensiones
+    printf("Ingrese la dimensión n:\n");
+    scanf("%d", &n);
+    printf("Ingrese el número de iteraciones:\n");
+    scanf("%d", &iters);
+    printf("Ingrese semilla para el generador de números aleatorios:\n");
+    scanf("%ld", &seed);
+    n_per_proc = n/comm_sz;
+  }
+  
+  MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
+
+  double* AA=malloc(sizeof(double) * n);
   srand(16);
-  gen_data(AA,lng);
+  gen_data(AA,n);
   double CC[1];
 
-  MPI_Scatter(AA, lng/comm_sz, MPI_DOUBLE, CC, lng/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(AA, n/comm_sz, MPI_DOUBLE, CC, n/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
   MPI_Barrier(MPI_COMM_WORLD);
   if(my_rank==0){
@@ -61,18 +73,7 @@ int main()
   MPI_Finalize();
   return 0;
   
-  if(my_rank == 0){
-    // Obtener las dimensiones
-    printf("Ingrese la dimensión n:\n");
-    scanf("%d", &n);
-    printf("Ingrese el número de iteraciones:\n");
-    scanf("%d", &iters);
-    printf("Ingrese semilla para el generador de números aleatorios:\n");
-    scanf("%ld", &seed);
-    n_per_proc = n/comm_sz;
-  }
   
-  MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   A = malloc(sizeof(double) * n * n);
   srand(seed);
