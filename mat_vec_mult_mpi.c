@@ -76,7 +76,10 @@ int main()
   
   
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
+  MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   A = malloc(sizeof(double) * n * n);
+
   srand(seed);
   gen_data(A, n*n);
   x = malloc(sizeof(double) * (n_per_proc*comm_sz));
@@ -84,8 +87,8 @@ int main()
     y = malloc(sizeof(double) * (n_per_proc*comm_sz));
     gen_data(x, (n_per_proc*comm_sz));
   }
-  MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
-  MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  
+  
 
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
@@ -94,18 +97,18 @@ int main()
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   //printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
+  if(my_rank==0){
+    printf("-----------sale de la barrera-------------\n"); 
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Finalize();
+  return 0;
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   printf("continuaaaa p=%d",my_rank);
   local_start = MPI_Wtime();
   printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(my_rank==0){
-    printf("-----------sale de la barrera-------------\n"); 
-  }
-
-  MPI_Finalize();
-  return 0;
+  
 
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
