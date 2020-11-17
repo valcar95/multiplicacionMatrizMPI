@@ -119,7 +119,7 @@ void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, i
         local_y[i] = 0.0 ;
         for ( int k = 0 ; k<local_n; k++ )
         {
-            local_y[i] += local_x[k]*A[i*n+k];
+            local_y[i] += local_x[k]*A[k*n+k];
         }
     }
     
