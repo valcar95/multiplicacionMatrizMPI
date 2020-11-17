@@ -48,23 +48,15 @@ int main()
     scanf("%ld", &seed);
     srand(seed);
 
-    A = malloc(sizeof(double) * n * n);
-    x = malloc(sizeof(double) * n);
-    y = malloc(sizeof(double) * n);
-
-    gen_data(A, n*n);
-    gen_data(x, n);
-
     n_per_proc = n/comm_sz;
-    if(n%comm_sz != 0)
-    {
-      n_per_proc+=1;
-      for(int i = 0; i < (n_per_proc*comm_sz - n); i++){
-        x[n+i] = 0;
-        for(int j = 0; j < (n_per_proc*comm_sz - n); j++)
-          A[i*n+j]=0;
-      }
-    }
+    int mod=n%comm_sz;
+
+    A = malloc(sizeof(double) * (n+mod) * (n+mod));
+    x = malloc(sizeof(double) * (n+mod));
+    y = malloc(sizeof(double) * (n+mod));
+
+    gen_data(A, (n+mod)*(n+mod));
+    gen_data(x, (n+mod));
     
   }
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
