@@ -48,9 +48,9 @@ int main()
     scanf("%ld", &seed);
     srand(seed);
 
-    n_per_proc = (n+mod)/comm_sz;
+    
     int mod=n%comm_sz;
-
+    n_per_proc = (n+mod)/comm_sz;
     A = malloc(sizeof(double) * (n+mod) * (n+mod));
     x = malloc(sizeof(double) * (n+mod));
     y = malloc(sizeof(double) * (n+mod));
