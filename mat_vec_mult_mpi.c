@@ -31,7 +31,7 @@ int main()
   double* local_x=NULL;
   double* local_y=NULL;
 
-  int n, iters, n_per_proc;
+  int n, new_n, iters, n_per_proc;
   long seed;
   int my_rank,comm_sz;
   double local_start, local_finish, local_elapsed, elapsed;
@@ -60,17 +60,17 @@ int main()
   if(n%comm_sz!=0){
     n_per_proc+=1;
   }
-
-  A = malloc(sizeof(double) * n * n);
+  new_n=n_per_proc*comm_sz;
+  A = malloc(sizeof(double) * new_n * new_n);
   srand(seed);
-  gen_data(A, n*n);
+  gen_data(A, new_n*new_n);
 
   if(my_rank==0){
-    x = malloc(sizeof(double) * n);
-    y = malloc(sizeof(double) * n);
-    gen_data(x, n);
-    print_vector("x", x, n);
-    print_vector("A", A, n*n);
+    x = malloc(sizeof(double) * new_n);
+    y = malloc(sizeof(double) * new_n);
+    gen_data(x, new_n);
+    print_vector("x", x, new_n);
+    print_vector("A", A, new_n*new_n);
   }
 
   local_x=malloc(sizeof(double)*n_per_proc);
