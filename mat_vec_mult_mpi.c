@@ -40,11 +40,11 @@ int main()
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
 
-  int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
-  int CC[1];
+  double AA[16]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0};
+  double CC[1];
 
-  MPI_Scatter(AA, 16/comm_sz, MPI_INT, CC, 16/comm_sz, MPI_INT, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
+  MPI_Scatter(AA, 16/comm_sz, MPI_DOUBLE, CC, 16/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
   MPI_Barrier(MPI_COMM_WORLD);
   if(my_rank==0){
     printf("-----------sale de la barrera-------------\n"); 
