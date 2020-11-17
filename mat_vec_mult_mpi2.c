@@ -84,13 +84,6 @@ int main()
 
   mat_vect_mult(A, local_x, local_y, n, iters,p);
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(pid==0){
-      printf("llega despues de la multi");
-  }
-
-  MPI_Finalize();
-  return 0;
 
   MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
