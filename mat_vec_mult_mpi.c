@@ -66,10 +66,17 @@ int main()
 
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
-  printf("antes de scater  from process=%d np=%d\n",my_rank,n_per_proc);
+
+  int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
+  int CC[4];
+
+  MPI_Scatter(AA, 4, MPI_INT, CC, 4, MPI_INT, 0, MPI_COMM_WORLD);
+
+  printf("sale de scater  from process=%d np=%d\n",my_rank,CC[0]);
   MPI_Barrier(MPI_COMM_WORLD);
-  if(my_rank==0)
-    {printf("-------------------");}
+  if(my_rank==0){
+    printf("Entra al segundo"); 
+  }
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
