@@ -70,6 +70,11 @@ int main()
   int AA[16]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
   int CC[1];
 
+  if(my_rank==0){
+    printf("sale de la barrera"); 
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+
   MPI_Scatter(&AA, 1, MPI_INT, CC, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
@@ -91,6 +96,7 @@ int main()
   // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
   // Tomamos el tiempo del proceso más lento
+  
   MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
              MPI_MAX, 0, MPI_COMM_WORLD);
 
