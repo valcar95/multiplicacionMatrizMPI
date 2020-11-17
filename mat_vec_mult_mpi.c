@@ -48,10 +48,7 @@ int main()
     scanf("%d", &iters);
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
-    
-    n_per_proc = n*n/(comm_sz*(n/comm_sz));
-    
-    
+    n_per_proc = n/comm_sz;
   }
   
   printf("antes de b cast from process=%d\n",my_rank);
