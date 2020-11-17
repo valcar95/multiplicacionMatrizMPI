@@ -43,6 +43,7 @@ int main()
   //generar valores para las matrices
   gen_data(A, n*n);
   gen_data(x, n);
+  print_vector("x", x, n);
 
   mat_vect_mult(A, x, y, n, iters);
 

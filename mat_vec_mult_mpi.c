@@ -69,6 +69,7 @@ int main()
     x = malloc(sizeof(double) * (n_per_proc*comm_sz));
     y = malloc(sizeof(double) * (n_per_proc*comm_sz));
     gen_data(x, (n_per_proc*comm_sz));
+    print_vector("x", x, (n_per_proc*comm_sz));
   }
 
   local_x=malloc(sizeof(double)*n_per_proc);
