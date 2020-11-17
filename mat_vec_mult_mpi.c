@@ -25,6 +25,8 @@ int main()
   double* x = NULL;
   double* y = NULL;
 
+  int mod=0;
+
   double* local_A=NULL;
   double* local_x=NULL;
   double* local_y=NULL;
@@ -49,7 +51,7 @@ int main()
     srand(seed);
 
     
-    int mod=n%comm_sz;
+    mod=n%comm_sz;
     n_per_proc = (n+mod)/comm_sz;
     A = malloc(sizeof(double) * (n+mod) * (n+mod));
     x = malloc(sizeof(double) * (n+mod));
@@ -64,18 +66,16 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast (&A, (n+mod) * (n+mod), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 
   printf("despues de b cast from process=%d\n",my_rank);
 
-  local_A=malloc(sizeof(double)*n_per_proc*n_per_proc);
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
   printf("antes de scater  from process=%d\n",my_rank);
 
-  MPI_Scatter(A, n_per_proc*n_per_proc, MPI_DOUBLE, local_A, n_per_proc*n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("entre scater  from process=%d\n",my_rank);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d\n",my_rank);
   
@@ -87,7 +87,7 @@ int main()
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
   printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
-  mat_vect_mult(local_A, local_x, local_y, n_per_proc, iters);
+  mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   local_finish = MPI_Wtime();
