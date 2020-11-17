@@ -80,9 +80,7 @@ int main()
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   //printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
-  
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
-  MPI_Barrier(MPI_COMM_WORLD);
   printf("continuaaaa p=%d",my_rank);
   local_start = MPI_Wtime();
   printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
@@ -93,7 +91,6 @@ int main()
   // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
   // Tomamos el tiempo del proceso más lento
-  MPI_Barrier(MPI_COMM_WORLD);
   MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
              MPI_MAX, 0, MPI_COMM_WORLD);
 
