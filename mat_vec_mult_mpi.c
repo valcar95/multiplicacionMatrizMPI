@@ -48,42 +48,22 @@ int main()
     scanf("%d", &iters);
     printf("Ingrese semilla para el generador de números aleatorios:\n");
     scanf("%ld", &seed);
-    n_per_proc = n/comm_sz;
+    
   }
   
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
-
-  /*double* AA=malloc(sizeof(double) * n);
-  srand(16);
-  gen_data(AA,n);
-  double* CC=malloc(sizeof(double) * n/comm_sz);
-
-  MPI_Scatter(AA, n/comm_sz, MPI_DOUBLE, CC, n/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(my_rank==0){
-    printf("-----------sale de la barrera-------------\n"); 
-  }
-  
-  printf("----------------Entra al segundo--------------------"); 
-  if(my_rank==0){
-    printf("Entra al segundo"); 
-  }
-  MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Finalize();
-  return 0;
-  */
-  
-  
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
+  n_per_proc = n/comm_sz;
+  if(n%comm_sz!=0){
+    n_per_proc+=1;
+  }
   A = malloc(sizeof(double) * n * n);
-
   srand(seed);
   gen_data(A, n*n);
-  x = malloc(sizeof(double) * (n_per_proc*comm_sz));
   if(my_rank==0){
+    x = malloc(sizeof(double) * (n_per_proc*comm_sz));
     y = malloc(sizeof(double) * (n_per_proc*comm_sz));
     gen_data(x, (n_per_proc*comm_sz));
   }
