@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <string.h>
 
 /* función para generar <size> cantidad de datos aleatorios */
 void gen_data(double * array, int size);
@@ -76,6 +77,7 @@ int main()
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  print_vector(strcat("A",itoa(my_rank)), A, new_n*new_n);
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
