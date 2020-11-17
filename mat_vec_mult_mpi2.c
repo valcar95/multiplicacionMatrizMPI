@@ -83,8 +83,8 @@ int main()
       printf("llega despues del despues de gen A");
   }
 
-  //MPI_Finalize();
-  //return 0;
+  MPI_Finalize();
+  return 0;
 
   mat_vect_mult(A, local_x, local_y, n, iters,p);
 
