@@ -95,7 +95,7 @@ int main()
 
   
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d local_x[0]=%lf np=%d\n",my_rank,local_x[0],n_per_proc);
+  printf("sale de scater  from process=%d local_x[0]=%lf np=%d A[5]=%lf\n",my_rank,local_x[0],n_per_proc,A[5]);
   
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   MPI_Barrier(MPI_COMM_WORLD);
