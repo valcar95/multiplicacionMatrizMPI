@@ -55,42 +55,31 @@ int main()
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
+
   n_per_proc = n/comm_sz;
   if(n%comm_sz!=0){
     n_per_proc+=1;
   }
+
   A = malloc(sizeof(double) * n * n);
   srand(seed);
   gen_data(A, n*n);
+
   if(my_rank==0){
     x = malloc(sizeof(double) * (n_per_proc*comm_sz));
     y = malloc(sizeof(double) * (n_per_proc*comm_sz));
     gen_data(x, (n_per_proc*comm_sz));
   }
-  
-  
 
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
-
-  
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d local_x[0]=%lf np=%d A[5]=%lf\n",my_rank,local_x[0],n_per_proc,A[5]);
-  
-  //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
   MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
-  
-  //printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
-
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
-  
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  
   local_finish = MPI_Wtime();
-  // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
-  // Tomamos el tiempo del proceso más lento
   
   MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
              MPI_MAX, 0, MPI_COMM_WORLD);
@@ -99,9 +88,9 @@ int main()
     // Solo el proceso 0 imprime el tiempo transcurrido
     printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     print_vector("y", y, n);
-    //free(A);
-    //free(x);
-    //free(y);
+    free(A);
+    free(x);
+    free(y);
   }
 
   MPI_Finalize();
