@@ -67,7 +67,7 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast (&A, n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast (A, n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   printf("\n-----------------Vector A en process=%d---------------\n",my_rank);
   print_vector("A", A, n*n);
