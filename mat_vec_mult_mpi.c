@@ -57,8 +57,7 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast (&A, (n+mod) * (n+mod), MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
+  
   mod=n%comm_sz;
   n_per_proc = (n+mod)/comm_sz;
   A = malloc(sizeof(double) * (n+mod) * (n+mod));
@@ -66,6 +65,9 @@ int main()
   y = malloc(sizeof(double) * (n+mod));
   gen_data(A, (n+mod)*(n+mod));
   gen_data(x, (n+mod));
+
+  MPI_Bcast (&A, (n+mod) * (n+mod), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
 
 
   printf("despues de b cast from process=%d\n",my_rank);
