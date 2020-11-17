@@ -15,7 +15,7 @@
 void gen_data(double * array, int size);
 /* función para multiplicar iterativamente un matriz 
  * <m x n> por un vector de tam <n> */
-void mat_vect_mult(double* A, double* x, double* y, int n, int it, int p);
+void mat_vect_mult(double* A, double* x, double* y, int local_n, int it);
 /* función para imprimir un vector llamado <name> de tamaño <m>*/
 void print_vector(char* name, double*  y, int m);
 
@@ -28,7 +28,7 @@ int main()
   double* local_x=NULL;
   double* local_y=NULL;
 
-  int n, iters;
+  int n,local_n, iters;
   int pid, p;
   long seed;
 
@@ -71,16 +71,17 @@ int main()
   
 
   // Local data
-  local_x = malloc(sizeof(double) * n/p);
-  local_y = malloc(sizeof(double) * n/p);
+  local_n=n/p;
+  local_x = malloc(sizeof(double) * local_n);
+  local_y = malloc(sizeof(double) * local_n);
 
   
 
-  MPI_Scatter(x , n/p , MPI_DOUBLE , local_x , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
+  MPI_Scatter(x , local_n , MPI_DOUBLE , local_x , local_n , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
  
 
-  mat_vect_mult(A, local_x, local_y, n, iters,p);
+  mat_vect_mult(A, local_x, local_y, local_n, iters);
 
   MPI_Barrier(MPI_COMM_WORLD);
   if(pid==0){
@@ -109,13 +110,13 @@ void gen_data(double * array, int size){
     array[i] = (double) rand() / (double) RAND_MAX;
 }
 
-void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, int p){
+void mat_vect_mult(double* A, double* local_x, double* local_y, int local_n, int it){
   int h, i, j,k;
   for(h = 0; h < it; h++){
 
-      for(i = 0; i < (n/p); i++){
+      for(i = 0; i < local_n; i++){
         local_y[i] = 0.0;
-        for(j = 0; j < (n/p); j++){
+        for(j = 0; j < local_n; j++){
             local_y[i] += A[i*n+j] * local_x[j];
         }
       }
@@ -134,7 +135,7 @@ void mat_vect_mult(double* A, double* local_x, double* local_y, int n, int it, i
     }
     */
     // x <= y
-    for(i = 0; i < (n/p); i++){
+    for(i = 0; i < local_n; i++){
         local_x[i] = local_y[i];
     }
   }
