@@ -44,6 +44,7 @@ int main()
   gen_data(A, n*n);
   gen_data(x, n);
   print_vector("x", x, n);
+  print_vector("A", A, n*n);
 
   mat_vect_mult(A, x, y, n, iters);
 
