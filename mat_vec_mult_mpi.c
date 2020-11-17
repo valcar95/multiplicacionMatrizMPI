@@ -56,7 +56,7 @@ int main()
   double* AA=malloc(sizeof(double) * n);
   srand(16);
   gen_data(AA,n);
-  double CC[1];
+  double* CC=malloc(sizeof(double) * n/comm_sz);
 
   MPI_Scatter(AA, n/comm_sz, MPI_DOUBLE, CC, n/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
