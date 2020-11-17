@@ -72,7 +72,7 @@ int main()
 
   
 
-  MPI_Scatter(&AA, 16/comm_sz, MPI_DOUBLE, CC, 16/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(AA, 16/comm_sz, MPI_DOUBLE, CC, 16/comm_sz, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d CC[0]=%lf\n",my_rank,CC[0]);
   if(my_rank==0){
     printf("-----------sale de la barrera-------------\n"); 
