@@ -95,16 +95,10 @@ int main()
 
   
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d local_x[0]=%lf np=%d\n",my_rank,local_x[0],n_per_proc);
+  //printf("sale de scater  from process=%d local_x[0]=%lf np=%d\n",my_rank,local_x[0],n_per_proc);
   
-  if(my_rank==0){
-    printf("-----------sale de la barrera-------------\n"); 
-  }
-  MPI_Barrier(MPI_COMM_WORLD);
-  MPI_Finalize();
-  return 0;
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
-  printf("continuaaaa p=%d",my_rank);
+  MPI_Barrier(MPI_COMM_WORLD);
   local_start = MPI_Wtime();
   printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
 
