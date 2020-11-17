@@ -71,7 +71,7 @@ int main()
   local_y=malloc(sizeof(double)*n_per_proc);
 
   printf("antes de scater  from process=%d\n",my_rank);
-  MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatter(&x[0], n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   printf("sale de scater  from process=%d\n",my_rank);
   
 
