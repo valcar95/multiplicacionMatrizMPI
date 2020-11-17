@@ -95,7 +95,7 @@ int main()
 
   
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  //printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
+  printf("sale de scater  from process=%d local_x[0]=%lf np=%d\n",my_rank,local_x[0],n_per_proc);
   
   if(my_rank==0){
     printf("-----------sale de la barrera-------------\n"); 
