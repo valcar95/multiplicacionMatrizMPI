@@ -51,7 +51,6 @@ int main()
     n_per_proc = n/comm_sz;
   }
   
-  printf("antes de b cast from process=%d\n",my_rank);
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
   A = malloc(sizeof(double) * n*n);
@@ -65,14 +64,11 @@ int main()
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  printf("despues de b cast from process=%d\n",my_rank);
-
   local_x=malloc(sizeof(double)*n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
-  printf("antes de scater  from process=%d\n",my_rank);
-  MPI_Scatter(x, n_per_proc-1, MPI_DOUBLE, local_x, n_per_proc-1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d\n",my_rank);
+  MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
 
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
