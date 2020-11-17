@@ -104,6 +104,8 @@ int main()
   //printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
 
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
+  
+  MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   if(my_rank==0){
     printf("-----------final-----------------"); 
   }
@@ -111,8 +113,6 @@ int main()
   MPI_Finalize();
 
   return 0;
-  MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
   local_finish = MPI_Wtime();
   // Cada proceso toma un tiempo local
   local_elapsed = local_finish - local_start;
