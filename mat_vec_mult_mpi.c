@@ -126,10 +126,12 @@ void mat_vect_mult(double* A, double* x, double* y, int n, int it){
 void print_vector(char* name, double*  y, int m) {
    int i;
    printf("\nVector %s\n", name);
-   for (i = 0; i < m; i++)
-      printf("%f ", y[i]);
+   for (i = 0; i < m; i++){
+     printf("%f ", y[i]);
       if(i%16==0){
          printf("\n");
       }
+   }
+      
    printf("\n");
 }
