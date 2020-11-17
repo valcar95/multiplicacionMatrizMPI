@@ -86,15 +86,14 @@ int main()
 
 
   MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
-
-  MPI_Finalize();
-  print_vector("y", y, n);
+  
   free(A);
   if(pid==0){
+    print_vector("y", y, n);
     free(x);
     free(y);
   }
-  
+  MPI_Finalize();
   return 0;
 }
 
