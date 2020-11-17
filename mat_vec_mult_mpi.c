@@ -128,5 +128,8 @@ void print_vector(char* name, double*  y, int m) {
    printf("\nVector %s\n", name);
    for (i = 0; i < m; i++)
       printf("%f ", y[i]);
+      if(i%16==0){
+         printf("\n");
+      }
    printf("\n");
 }
