@@ -78,15 +78,17 @@ int main()
 
   MPI_Scatter(x , n/p , MPI_DOUBLE , local_x , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
- MPI_Barrier(MPI_COMM_WORLD);
+ 
+
+  mat_vect_mult(A, local_x, local_y, n, iters,p);
+
+  MPI_Barrier(MPI_COMM_WORLD);
   if(pid==0){
-      printf("llega despues del despues de gen A");
+      printf("llega despues de la multi");
   }
 
   MPI_Finalize();
   return 0;
-
-  mat_vect_mult(A, local_x, local_y, n, iters,p);
 
   MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
