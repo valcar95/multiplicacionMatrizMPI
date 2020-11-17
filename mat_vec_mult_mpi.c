@@ -73,7 +73,6 @@ int main()
   MPI_Scatter(&AA, 1, MPI_INT, CC, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("sale de scater  from process=%d CC[0]=%d\n",my_rank,CC[0]);
-  MPI_Barrier(MPI_COMM_WORLD);
   printf("----------------Entra al segundo--------------------"); 
   if(my_rank==0){
     printf("Entra al segundo"); 
