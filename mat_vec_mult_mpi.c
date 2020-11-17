@@ -53,7 +53,7 @@ int main()
   
   MPI_Bcast(&n,1,MPI_INT,0,MPI_COMM_WORLD);
 
-  double* AA=malloc(sizeof(double) * n);
+  /*double* AA=malloc(sizeof(double) * n);
   srand(16);
   gen_data(AA,n);
   double* CC=malloc(sizeof(double) * n/comm_sz);
@@ -72,6 +72,7 @@ int main()
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
   return 0;
+  */
   
   
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
@@ -97,6 +98,15 @@ int main()
   printf("continuaaaa p=%d",my_rank);
   local_start = MPI_Wtime();
   printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  if(my_rank==0){
+    printf("-----------sale de la barrera-------------\n"); 
+  }
+
+  MPI_Finalize();
+  return 0;
+
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
