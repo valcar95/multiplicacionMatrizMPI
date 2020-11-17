@@ -78,7 +78,7 @@ int main()
     printf("Entra al segundo"); 
   }
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
+  //printf("sale de scater  from process=%d np=%d\n",my_rank,n_per_proc);
   
   
   //Nos aseguramos que todos los procesos inicien al "mismo" tiempo
