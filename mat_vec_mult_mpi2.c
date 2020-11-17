@@ -55,6 +55,14 @@ int main()
   // la matriz A tendrá una representación unidimensional
   A = malloc(sizeof(double) * n * n);
   gen_data(A, n*n);
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  if(pid==0){
+      printf("llega antes del despues de gen A");
+  }
+
+  MPI_Finalize();
+  return 0;
   
   //generar valores para las matrices
   
@@ -71,13 +79,7 @@ int main()
   local_x = malloc(sizeof(double) * n/p);
   local_y = malloc(sizeof(double) * n/p);
 
-  MPI_Barrier(MPI_COMM_WORLD);
-  if(pid==0){
-      printf("llega antes del scatter");
-  }
-
-  MPI_Finalize();
-  return 0;
+  
 
   MPI_Scatter(x , n/p , MPI_DOUBLE , local_x , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
