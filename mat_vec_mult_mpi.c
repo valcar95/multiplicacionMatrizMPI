@@ -104,7 +104,12 @@ int main()
   //printf("from process=%d local_A[0]=%lf\n",my_rank,local_A[0]);
 
   mat_vect_mult(A, local_x, local_y, n_per_proc, iters);
+  if(my_rank==0){
+    printf("-----------final-----------------"); 
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
+
   return 0;
   MPI_Gather(local_y, n_per_proc, MPI_DOUBLE, y, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
