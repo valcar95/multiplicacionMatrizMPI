@@ -57,14 +57,14 @@ int main()
   srand(seed);
   gen_data(A, n*n);
   if(my_rank==0){
-    x = malloc(sizeof(double) * n);
-    y = malloc(sizeof(double) * n);
-    gen_data(x, n);
+    x = malloc(sizeof(double) * (n_per_proc*comm_sz));
+    y = malloc(sizeof(double) * (n_per_proc*comm_sz));
+    gen_data(x, (n_per_proc*comm_sz));
   }
   MPI_Bcast(&iters,1,MPI_INT,0,MPI_COMM_WORLD);
   MPI_Bcast (&n_per_proc, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  local_x=malloc(sizeof(double)*(n_per_proc+1));
+  local_x=malloc(sizeof(double)*(n_per_proc);
   local_y=malloc(sizeof(double)*n_per_proc);
 
   MPI_Scatter(x, n_per_proc, MPI_DOUBLE, local_x, n_per_proc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
