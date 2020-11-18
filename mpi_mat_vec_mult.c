@@ -75,8 +75,8 @@ int main()
   //generar valores para las matrices
  
   if(my_rank==0){
-    print_vector("X", x, n);
-    print_vector("A", A, n*n);
+    //print_vector("X", x, n);
+    //print_vector("A", A, n*n);
   }
 
   MPI_Barrier(MPI_COMM_WORLD);
