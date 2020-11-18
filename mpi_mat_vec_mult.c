@@ -60,7 +60,7 @@ int main()
   if(my_rank==0){
     srand(seed); 
     A = malloc(sizeof(double) * n * n);
-    gen_data_arr(A, n*n, real_n);
+    gen_data_arr(A, n, real_n);
     gen_data_vec(x, n, real_n);
   }
 
