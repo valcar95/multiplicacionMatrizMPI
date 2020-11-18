@@ -95,7 +95,7 @@ int main()
 void gen_data_arr(double * array, int size, int real_size){
   int i,j;
   for (i = 0; i < size; i++){
-      for (j=0, j<size; j++){
+      for (j=0; j<size; j++){
           if(i<real_size && j<real_size){
               array[i*size+j] = (double) rand() / (double) RAND_MAX;
           }
