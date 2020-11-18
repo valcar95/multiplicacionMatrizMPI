@@ -74,15 +74,15 @@ int main()
   //generar valores para las matrices
  
   if(my_rank==0){
-    print_vector("x", x, n);
-    print_vector("A", A, n*n);
+    //print_vector("x", x, real_n);
+    //print_vector("A", A, n*n);
   }
 
   mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc);
 
   MPI_Gather( local_y , rows_per_proc, MPI_DOUBLE , y , rows_per_proc, MPI_DOUBLE , 0, MPI_COMM_WORLD );
   if(my_rank==0){
-    print_vector("y", y, n);
+    print_vector("y", y, real_n);
     free(A);
   }
   
