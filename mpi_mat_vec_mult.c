@@ -73,7 +73,7 @@ int main()
 
   //generar valores para las matrices
  
-  if(my_rank==0){
+  if(my_rank==1){
     print_vector("VECTOR X", x, n);
     //print_vector("A", A, n*n);
   }
