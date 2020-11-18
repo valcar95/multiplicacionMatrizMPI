@@ -90,8 +90,8 @@ int main()
 
   //MPI_Gather( local_y , rows_per_proc, MPI_DOUBLE , y , rows_per_proc, MPI_DOUBLE , 0, MPI_COMM_WORLD );
   if(my_rank==0){
-    printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     print_vector("y", y, real_n);
+    printf("Tiempo de ejecución en multiplicación = %5.2f segundos \n", elapsed);
     free(A);
   }
   
