@@ -78,6 +78,8 @@ int main()
     //print_vector("A", A, n*n);
   }
 
+  MPI_Barrier(MPI_COMM_WORLD);
+
   mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc, my_rank);
 
   MPI_Gather( local_y , rows_per_proc, MPI_DOUBLE , y , rows_per_proc, MPI_DOUBLE , 0, MPI_COMM_WORLD );
@@ -127,7 +129,7 @@ void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n
             local_y[i]+=local_A[i*n+j]*x[j];
         }
     }
-    if(rank==0){
+    if(rank==1){
         print_vector("local_A",local_A, rows_per_proc*n);
         print_vector("x",x,n);
         print_vector("local_y",local_y,rows_per_proc);
