@@ -64,7 +64,7 @@ int main()
     gen_data_vec(x, n, real_n);
   }
 
-  MPI_Bcast(x, n , MPI_INT , 0 , MPI_COMM_WORLD );
+  MPI_Bcast(x, n , MPI_DOUBLE , 0 , MPI_COMM_WORLD );
   rows_per_proc=n/comm_sz;
   local_A=malloc(sizeof(double)*rows_per_proc*n);
   local_y=malloc(sizeof(double)*rows_per_proc);
