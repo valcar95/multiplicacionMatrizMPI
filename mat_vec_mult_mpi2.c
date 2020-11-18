@@ -51,7 +51,7 @@ int main()
   }
 
   MPI_Bcast(&seed,1,MPI_DOUBLE,0,MPI_COMM_WORLD);
-  MPI_Bcast ( &n, 1 , MPI_INT , 0 , MPI_COMM_WORLD );
+  
   MPI_Bcast ( &iters, 1 , MPI_INT , 0 , MPI_COMM_WORLD );
   srand(seed);
   // la matriz A tendrá una representación unidimensional
@@ -76,14 +76,9 @@ int main()
   local_x = malloc(sizeof(double) * local_n);
   local_y = malloc(sizeof(double) * local_n);
 
-  
-
   MPI_Scatter(x , local_n , MPI_DOUBLE , local_x , local_n , MPI_DOUBLE , 0, MPI_COMM_WORLD );
 
- 
-
   mat_vect_mult(A, local_x, local_y, n, iters,p);
-
 
   MPI_Gather( local_y , n/p , MPI_DOUBLE , y , n/p , MPI_DOUBLE , 0, MPI_COMM_WORLD );
   
