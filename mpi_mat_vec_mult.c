@@ -16,7 +16,7 @@ void gen_data_arr(double * array, int size, int real_size);
 void gen_data_vec(double * array, int size, int real_size);
 /* función para multiplicar iterativamente un matriz 
  * <m x n> por un vector de tam <n> */
-void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc);
+void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc, int rank);
 /* función para imprimir un vector llamado <name> de tamaño <m>*/
 void print_vector(char* name, double*  y, int m);
 
@@ -78,7 +78,7 @@ int main()
     print_vector("A", A, n*n);
   }
 
-  mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc);
+  mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc, my_rank);
 
   MPI_Gather( local_y , rows_per_proc, MPI_DOUBLE , y , rows_per_proc, MPI_DOUBLE , 0, MPI_COMM_WORLD );
   if(my_rank==0){
@@ -118,7 +118,7 @@ void gen_data_vec(double * array, int size, int real_size){
   }
 }
 
-void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc){
+void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc, int rank){
   int h, i, j;
   for(h = 0; h < it; h++){ 
     for(i=0; i<rows_per_proc; i++){
@@ -126,6 +126,11 @@ void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n
         for(j=0; j<n; j++){
             local_y[i]+=local_A[i*n+j]*x[j];
         }
+    }
+    if(rank==0){
+        print_vector("local_A",local_A, rows_per_proc*n);
+        print_vector("x",x,n);
+        print_vector("local_y",local_y,rows_per_proc);
     }
     MPI_Allgather( local_y , rows_per_proc , MPI_DOUBLE , y , rows_per_proc , MPI_DOUBLE , MPI_COMM_WORLD );
     // x <= y
