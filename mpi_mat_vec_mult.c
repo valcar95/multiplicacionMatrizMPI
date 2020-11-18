@@ -127,7 +127,7 @@ void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n
             local_y[i]+=local_A[i*n+j]*x[j];
         }
     }
-    if(rank==2){
+    if(rank==0){
         print_vector("local_A",local_A, rows_per_proc*n);
         print_vector("x",x,n);
         print_vector("local_y",local_y,rows_per_proc);
