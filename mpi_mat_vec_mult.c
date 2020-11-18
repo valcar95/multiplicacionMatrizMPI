@@ -12,7 +12,8 @@
 #include <mpi.h>
 
 /* función para generar <size> cantidad de datos aleatorios */
-void gen_data(double * array, int size);
+void gen_data_arr(double * array, int size, int real_size);
+void gen_data_vec(double * array, int size, int real_size);
 /* función para multiplicar iterativamente un matriz 
  * <m x n> por un vector de tam <n> */
 void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc);
@@ -59,8 +60,8 @@ int main()
   if(my_rank==0){
     srand(seed); 
     A = malloc(sizeof(double) * n * n);
-    gen_data(A, n*n);
-    gen_data(x, n);
+    gen_data_arr(A, n*n, real_n);
+    gen_data_vec(x, n, real_n);
   }
 
   MPI_Bcast(x, n , MPI_INT , 0 , MPI_COMM_WORLD );
@@ -72,8 +73,10 @@ int main()
 
   //generar valores para las matrices
  
-  //print_vector("x", x, n);
-  //print_vector("A", A, n*n);
+  if(my_rank==0){
+    print_vector("x", x, n);
+    print_vector("A", A, n*n);
+  }
 
   mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc);
 
@@ -89,10 +92,30 @@ int main()
   return 0;
 }
 
-void gen_data(double * array, int size){
+void gen_data_arr(double * array, int size, int real_size){
+  int i,j;
+  for (i = 0; i < size; i++){
+      for (j=0, j<size; j++){
+          if(i<real_size && j<real_size){
+              array[i*size+j] = (double) rand() / (double) RAND_MAX;
+          }
+          else{
+              array[i*size+j] = 0;
+          }
+      }
+  }
+}
+
+void gen_data_vec(double * array, int size, int real_size){
   int i;
-  for (i = 0; i < size; i++)
-    array[i] = (double) rand() / (double) RAND_MAX;
+  for (i = 0; i < size; i++){
+    if(i<real_size){
+        array[i] = (double) rand() / (double) RAND_MAX;
+    }
+    else{
+        array[i] = 0;
+    }
+  }
 }
 
 void mat_vect_mult(double* local_A, double* x, double* y, double* local_y, int n, int it, int rows_per_proc){
