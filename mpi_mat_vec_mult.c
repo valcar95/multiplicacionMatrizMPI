@@ -85,7 +85,7 @@ int main()
   
   free(x);
   free(y);
-  
+  MPI_Finalize();
   return 0;
 }
 
