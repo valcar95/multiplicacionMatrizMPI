@@ -30,6 +30,7 @@ int main()
 
   double* local_A=NULL;
   double* local_y=NULL;
+  double local_start, local_finish, local_elapsed, elapsed;
 
   int my_rank,comm_sz;
 
@@ -78,10 +79,18 @@ int main()
     print_vector("A", A, n*n);
   }
 
+  MPI_Barrier(MPI_COMM_WORLD);
+  local_start = MPI_Wtime();
   mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc);
+  local_finish = MPI_Wtime();
+  local_elapsed = local_finish - local_start;
+  
+  MPI_Reduce(&local_elapsed, &elapsed, 1, MPI_DOUBLE, \
+             MPI_MAX, 0, MPI_COMM_WORLD);
 
   //MPI_Gather( local_y , rows_per_proc, MPI_DOUBLE , y , rows_per_proc, MPI_DOUBLE , 0, MPI_COMM_WORLD );
   if(my_rank==0){
+    printf("Tiempo de ejecución = %5.2f segundos \n", elapsed);
     print_vector("y", y, real_n);
     free(A);
   }
