@@ -74,8 +74,8 @@ int main()
   //generar valores para las matrices
  
   if(my_rank==0){
-    print_vector("x", x, n);
-    print_vector("A", A, n*n);
+    //print_vector("x", x, n);
+    //print_vector("A", A, n*n);
   }
 
   mat_vect_mult(local_A, x, y, local_y, n, iters, rows_per_proc, my_rank);
