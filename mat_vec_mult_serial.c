@@ -9,6 +9,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
 
 /* función para generar <size> cantidad de datos aleatorios */
 void gen_data(double * array, int size);
