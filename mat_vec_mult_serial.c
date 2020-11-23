@@ -25,6 +25,8 @@ int main()
   double* y = NULL;
   int n, iters;
   long seed;
+  double elapsedTime;
+  struct timeval t1, t2;
 
   // Obtener las dimensiones
   printf("Ingrese la dimensión n:\n");
@@ -45,10 +47,14 @@ int main()
   gen_data(x, n);
   print_vector("x", x, n);
   print_vector("A", A, n*n);
-
+  gettimeofday(&t1, NULL);
   mat_vect_mult(A, x, y, n, iters);
+  gettimeofday(&t2, NULL);
 
   print_vector("y", y, n);
+  elapsedTime = (t2.tv_sec - t1.tv_sec);
+  printf("Tiempo de ejecución en multiplicación = %f segundos \n", elapsedTime);
+  
   free(A);
   free(x);
   free(y);
