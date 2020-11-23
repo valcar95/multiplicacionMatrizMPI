@@ -55,7 +55,7 @@ int main()
 
   print_vector("y", y, n);
   elapsedTime = (t2.tv_sec - t1.tv_sec);
-  elapsedTime += (t2.tv_usec - t1.tv_usec);
+  elapsedTime += (t2.tv_usec - t1.tv_usec)/1000000.0;
   printf("Tiempo de ejecución en multiplicación = %lf segundos \n", elapsedTime);
   
   free(A);
