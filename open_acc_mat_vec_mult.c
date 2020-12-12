@@ -62,16 +62,24 @@ void gen_data(double * array, int size){
 
 void mat_vect_mult(double* A, double* x, double* y, int n, int it){
   int h, i, j;
-  for(h = 0; h < it; h++){
-    for(i = 0; i < n; i++){
-      y[i] = 0.0;
-      for(j = 0; j < n; j++)
-	y[i] += A[i*n+j] * x[j];
-    }
-    // x <= y
-    for(i = 0; i < n; i++)
-      x[i] = y[i];
+  #pragma acc data create(A[0:n*n],x[0:n],y[0:n])
+  {
+    for(h = 0; h < it; h++){
+        #pragma acc loop independent
+        for(i = 0; i < n; i++){
+          y[i] = 0.0;
+          for(j = 0; j < n; j++)
+            y[i] += A[i*n+j] * x[j];
+        }
+        // x <= y
+        #pragma acc loop independent
+        for(i = 0; i < n; i++)
+        {
+            x[i] = y[i];
+        }
+      }
   }
+  //#pragma acc update self(y[0:n])
 }
 
 void print_vector(char* name, double*  y, int m) {
