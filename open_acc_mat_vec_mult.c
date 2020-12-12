@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 /* función para generar <size> cantidad de datos aleatorios */
 void gen_data(double * array, int size);
@@ -20,6 +21,10 @@ void print_vector(char* name, double*  y, int m);
 
 int main()
 {
+
+  struct timeval start, end;
+  float time;
+
   double* A = NULL;
   double* x = NULL;
   double* y = NULL;
@@ -43,10 +48,12 @@ int main()
   //generar valores para las matrices
   gen_data(A, n*n);
   gen_data(x, n);
-
+  gettimeofday(&start, NULL);
   mat_vect_mult(A, x, y, n, iters);
-
+  gettimeofday(&end, NULL);
+  time = (((end.tv_sec * 1000000) + end.tv_usec) - ((start.tv_sec * 1000000) + start.tv_usec))/1000000.0;
   print_vector("y", y, n);
+  printf("tiempo:  %.6f seg \n", time);
   free(A);
   free(x);
   free(y);
@@ -79,7 +86,6 @@ void mat_vect_mult(double* A, double* x, double* y, int n, int it){
         }
       }
   }
-  //#pragma acc update self(y[0:n])
 }
 
 void print_vector(char* name, double*  y, int m) {
