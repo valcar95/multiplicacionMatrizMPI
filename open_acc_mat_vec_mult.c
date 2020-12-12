@@ -72,12 +72,17 @@ void mat_vect_mult(double* A, double* x, double* y, int n, int it){
   #pragma acc data create(A[0:n*n],x[0:n],y[0:n])
   {
     for(h = 0; h < it; h++){
-        #pragma acc loop independent
-        for(i = 0; i < n; i++){
-          y[i] = 0.0;
-          for(j = 0; j < n; j++)
-            y[i] += A[i*n+j] * x[j];
-        }
+          #pragma acc loop independent collapse(2)
+          for(i = 0; i < n; i++){
+            for(j = 0; j < n; j++)
+            {
+              if(j==0){
+                y[i]=0.0;
+              }
+              y[i] += A[i*n+j] * x[j];
+            }
+              
+          }
         // x <= y
         #pragma acc loop independent
         for(i = 0; i < n; i++)
